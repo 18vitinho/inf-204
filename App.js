@@ -1,136 +1,158 @@
-/*import React, { useState } from "react";
-import { Text, View, Button, StyleSheet } from "react-native";
-
-export default function App() {
-  const [contagem, setContagem] = useState(0);
-
-  const precos = [10, 15, 20, 25, 30, 35];
-
-  let contador = 0;
-
-  // contador = contador + 1;
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.texto}>"Ola, Turma de INF204!"</Text>
-
-      <Text style={styles.titulo}>"Preços:"</Text>
-      {precos.filter((preco) => preco > 20)
-        .map((preco) => <Text style={styles.titulo}>{preco}</Text>)}
-
-      {/* <Text style={styles.titulo}>"CONTADOR:"</Text>
-      <Text style={styles.numero}>{contagem}</Text>
-      <Button
-        title="Incrementar +1"
-        onPress={() => setContagem(contagem + 1)}
-      /> }
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#e0f7fa"
-  },
-  texto: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#00695c"
-  },
-  titulo: {
-    fontSize: 20,
-    color: "#333333"
-  },
-  numero: {
-    fontSize: 48,
-    fontWeight: "bold",
-    color: "#4caf50",
-    marginBottom: 20
-  }
-});*/
-
-/*import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-export default function App() {
-return (
-<View style={styles.container}>
-<Text style={styles.texto}>"Ola, Turma de ADS306!"</Text>
-</View>
-);
-}
-const styles = StyleSheet.create({
-container: {
-flex: 1,
-justifyContent: "center",
-alignItems: "center",
-backgroundColor: "#e0f7fa"
-},
-texto: {
-fontSize: 24,
-fontWeight: "bold",
-color: "#00695c"
-}
-})*/
 import React, { useState } from "react";
-import { Text, View, Button, StyleSheet } from "react-native";
-export default function Contador() {
-const [contagem, setContagem] = useState(0);
+import {
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from "react-native";
 
-return (
-<View style={styles.container}>
-<Text style={styles.titulo}>"Contagem Atual:"</Text>
-<Text style={styles.numero}>{contagem}</Text>
+export default function UrnaEletronica() {
+	const [votosA, setVotosA] = useState(0);
+	const [votosB, setVotosB] = useState(0);
+	const [votosC, setVotosC] = useState(0);
+	const [nomeMesario, setNomeMesario] = useState("");
 
+	const totalVotos = votosA + votosB + votosC;
 
-<View style= {styles.botao}>
+	const porcentagem = (votos) =>
+		totalVotos === 0 ? 0 : Math.round((votos / totalVotos) * 100);
 
-<Button
-title="Incrementar +1"
-onPress={() => setContagem(contagem + 1)}
-/></View>
+	const zerarUrna = () => {
+		setVotosA(0);
+		setVotosB(0);
+		setVotosC(0);
+	};
 
-<View style= {styles.botao}>
+	return (
+		<View style={styles.container}>
+			<Text style={styles.titulo}>Painel de Votacao</Text>
 
-<Button
-title="decrementar -1"
-onPress={() => setContagem(contagem - 1)}
-/></View>
+			<TextInput
+				style={styles.input}
+				placeholder="Nome do mesario"
+				value={nomeMesario}
+				onChangeText={setNomeMesario}
+			/>
+			<Text style={styles.mesario}>
+				Mesario atual: {nomeMesario || "Nao informado"}
+			</Text>
 
+			<View style={styles.candidatoContainer}>
+				<Text style={styles.nomeCandidato}>
+					Candidato A: {votosA} votos ({porcentagem(votosA)}%)
+				</Text>
+				<TouchableOpacity
+					style={styles.botaoVotar}
+					onPress={() => setVotosA((prev) => prev + 1)}
+				>
+					<Text style={styles.textoBotao}>Votar em A</Text>
+				</TouchableOpacity>
+			</View>
 
-<View style= {styles.botao}>
+			<View style={styles.candidatoContainer}>
+				<Text style={styles.nomeCandidato}>
+					Candidato B: {votosB} votos ({porcentagem(votosB)}%)
+				</Text>
+				<TouchableOpacity
+					style={styles.botaoVotar}
+					onPress={() => setVotosB((prev) => prev + 1)}
+				>
+					<Text style={styles.textoBotao}>Votar em B</Text>
+				</TouchableOpacity>
+			</View>
 
-<Button
-title="contador zero"
-onPress={() => setContagem( 0)}
-/>
-</View>
+			<View style={styles.candidatoContainer}>
+				<Text style={styles.nomeCandidato}>
+					Candidato C: {votosC} votos ({porcentagem(votosC)}%)
+				</Text>
+				<TouchableOpacity
+					style={styles.botaoVotar}
+					onPress={() => setVotosC((prev) => prev + 1)}
+				>
+					<Text style={styles.textoBotao}>Votar em C</Text>
+				</TouchableOpacity>
+			</View>
 
-</View>
-);
+			<View style={styles.rodape}>
+				<Text style={styles.totalTexto}>Total de Votos: {totalVotos}</Text>
+				<TouchableOpacity style={styles.botaoZerar} onPress={zerarUrna}>
+					<Text style={styles.textoBotao}>Zerar Urna</Text>
+				</TouchableOpacity>
+			</View>
+		</View>
+	);
 }
+
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-justifyContent: "center",
-alignItems: "center",
-backgroundColor: "#ffffff"
-},
-titulo: {
-fontSize: 20,
-color: "#333333"
-},
-numero: {
-fontSize: 48,
-fontWeight: "bold",
-color: "#4caf50",
-marginBottom: 20
-},
-botao:{marginBottom:10,
-
-}
-})
-
-
+	container: {
+		flex: 1,
+		backgroundColor: "#F5F5F5",
+		justifyContent: "center",
+		alignItems: "center",
+		padding: 20,
+	},
+	titulo: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginBottom: 20,
+		color: "#14325A",
+	},
+	input: {
+		width: "100%",
+		backgroundColor: "#FFFFFF",
+		borderWidth: 1,
+		borderColor: "#B8C4D0",
+		borderRadius: 8,
+		padding: 12,
+		marginBottom: 8,
+	},
+	mesario: {
+		width: "100%",
+		fontSize: 16,
+		color: "#505050",
+		marginBottom: 18,
+	},
+	candidatoContainer: {
+		width: "100%",
+		backgroundColor: "#FFFFFF",
+		padding: 15,
+		borderRadius: 8,
+		marginBottom: 10,
+		alignItems: "center",
+		elevation: 2,
+	},
+	nomeCandidato: {
+		fontSize: 18,
+		marginBottom: 10,
+	},
+	botaoVotar: {
+		backgroundColor: "#0064A0",
+		padding: 10,
+		borderRadius: 5,
+		width: "80%",
+		alignItems: "center",
+	},
+	textoBotao: {
+		color: "#FFFFFF",
+		fontWeight: "bold",
+	},
+	rodape: {
+		marginTop: 20,
+		alignItems: "center",
+		width: "100%",
+		borderTopWidth: 1,
+		borderColor: "#CCCCCC",
+		paddingTop: 20,
+	},
+	totalTexto: {
+		fontSize: 20,
+		fontWeight: "bold",
+		marginBottom: 15,
+	},
+	botaoZerar: {
+		backgroundColor: "#808080",
+		padding: 15,
+		borderRadius: 5,
+	},
+});
